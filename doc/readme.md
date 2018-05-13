@@ -6,7 +6,7 @@ Entwicklung von Minecraft Plugins sehr gut.
 
 #### Vorbereitungen
 
-Zuerst ist es notwending die Entwicklungsumgebung [herunterzuladen]((https://www.jetbrains.com/idea/download)) und zu installieren. Bitte verwendet
+Zuerst ist es notwending die Entwicklungsumgebung [herunterzuladen]((https://www.jetbrains.com/idea/download)) und zu installieren. Verwendet
 hierfür die "Community Edition". Wenn das geschehen ist, bitte das Modul für Minecraft hinzufügen.
 
 Dafür bitte unter "File" -> "Settings" die Einstellungen öffnen und danach "Plugins" klicken.
@@ -22,7 +22,7 @@ Ein Klick auf "Install" startet den Installationsvorgang (die Schaltfläche ist 
 
 #### Neues Projekt anlegen
 
-Im Menü "File" -> "New" könnt ihr nun ein neues Minecraft Projet starten. 
+Im Menü "File" -> "New" könnt ihr nun ein neues Minecraft Projekt starten. 
 
 ![](./images/newproject2.png)
 
@@ -60,10 +60,10 @@ Dazu öffnen wir die Klasse Teleporter und fügen "onCommand" ein. (ein druck au
 
 ![](./images/coding3.png)
 
-Danach sorgen wir dafür, dass auch etwas passiert, wenn jemand "/sayhello" in den chat tippt.
+Danach sorgen wir dafür, dass auch etwas passiert, wenn jemand "/sayhello" in den Chat tippt.
 
 ![](./images/coding4.png)
 
-das Sieht dann in etwa so aus:
+das sieht dann in etwa so aus:
 
 ![](./images/game1.png)
