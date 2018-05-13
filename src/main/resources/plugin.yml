@@ -1,0 +1,11 @@
+name: Teleporter
+version: @version@
+main: at.coderdojo.teleporter.Teleporter
+load: STARTUP
+authors: [Minecraft, Mastercoders]
+description: Beispielplugin zum Teleportieren
+website: https://coderdojo-linz.github.io/
+commands:
+  sayhello:
+    description: Says hello
+    usage: /sayhello
