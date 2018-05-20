@@ -9,3 +9,10 @@ commands:
   sayhello:
     description: Says hello
     usage: /sayhello
+  teleportziel:
+    description: Ziel, an das wir uns teleportieren wollen.
+    usage: /teleportziel
+  teleportzu:
+    description: Teleportiere zum vorher markierten Ziel.
+    usage: /teleportzu
+

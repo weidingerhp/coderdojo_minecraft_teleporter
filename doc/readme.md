@@ -67,3 +67,168 @@ Danach sorgen wir dafür, dass auch etwas passiert, wenn jemand "/sayhello" in d
 das sieht dann in etwa so aus:
 
 ![](./images/game1.png)
+
+__Kleine hilfe am Rande:__  Damit ihr nicht jedes mal nach dem Bauen das Plugin in den Server hineinkopieren müsst, kann man mit folgendem kleinen
+Zusatz im _build.gradle_ das auch automatisch erledigen lassen.
+
+![](./images/gradle_deploy.PNG)
+
+#### Teleportieren
+
+Um erfolgreich teleportiert werden zu können muss man vorher natürlich wissen wohin. Am Ende erscheint ihr noch in einer Wand oder in 10km Höhe.
+
+Deswegen werden wir vorher einen Kommando definieren, bei dem man einen Ort markiert, an den Steve sich teleportieren soll.
+
+__plugin.yml__
+```
+name: Teleporter
+version: @version@
+main: at.coderdojo.teleporter.Teleporter
+load: STARTUP
+authors: [Minecraft, Mastercoders]
+description: Beispielplugin zum Teleportieren
+website: https://coderdojo-linz.github.io/
+commands:
+  sayhello:
+    description: Says hello
+    usage: /sayhello
+  teleportziel:
+    description: Ziel, an das wir uns teleportieren wollen.
+    usage: /teleportziel
+  teleportzu:
+    description: Teleportiere zum vorher markierten Ziel.
+    usage: /teleportzu
+```
+
+_teleportziel_ soll das Ziel markieren, an das sich Steve teleportieren soll. z.B. kann er sich so jedesmal augenblicklich nach
+Hause vor sein Bett teleportieren. Praktisch, wenn ihr euch schnell vor ein paar Zombies in Sicherheit bringen wollt tippt ihr danach
+einfach _teleportzu_.
+
+Nun fehlt uns nur noch der Code dazu im _Teleporter.java_.
+
+Zuerst müssen wir die `onCommand` Funktion anpassen:
+
+```java
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        //sender.sendMessage("Hallo " + sender.getName());
+        switch (command.getName()) {
+            case "sayhello":
+                sender.sendMessage("Hallo " + sender.getName());
+                break;
+            case "teleportziel":
+                teleportZielMerken(sender);
+                break;
+            case "teleportzu":
+                teleportZuZiel(sender);
+                break;
+            default:
+                sender.sendMessage("Leider kann ich das Kommando " + command.getName() + " noch nicht.");
+        }
+
+        return true;
+    }
+```
+
+Damit kann `onCommand` zwischen den einzelnen Kommandos unterscheiden. Als nächstes brauche wir noch eine Möglichkeit die
+gemerkten Position für jeden einzelnen Spieler zu merken.
+
+```java
+public final class Teleporter extends JavaPlugin {
+    Dictionary<String, Location> teleportZiele = new Hashtable<>();
+
+....
+```
+
+Die Funktion, sich den Punkt zu merken sieht dann in etwa so aus:
+```java
+    private void teleportZielMerken(CommandSender sender) {
+        Player player = (Player) sender;
+        teleportZiele.put(player.getName(), player.getLocation());
+        player.sendMessage("Ok, " + player.getName() + ", ich habe mir das gemerkt");
+    }
+```
+
+und die Funktion die Steve zu dem Ort zurückbringen soll in etwa so:
+```java
+    private void teleportZuZiel(CommandSender sender) {
+        Player player = (Player) sender;
+        if (teleportZiele.get(player.getName()) == null) {
+            player.sendMessage("Hey, " + player.getName() + ". Du musst dir zuerst einen Punkt merken");
+            return;
+        }
+
+        player.teleport(teleportZiele.get(player.getName()));
+        player.sendMessage("Ok, " + player.getName() + ", hab dich dorthin geschickt");
+    }
+```
+
+__Info:__ das ` if (teleportZiele.get(player.getName()) == null)` dient dazu, zuerst festzustellen ob wir uns schon eine
+Position für diesen Spieler gemerkt haben. Ansonst würde das `player.teleport` einen Fehler verursachen.
+
+Das gesamte `Teleporter.java` sieht nach den Änderungen so aus:
+
+```java
+package at.coderdojo.teleporter;
+
+import org.bukkit.Location;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.Dictionary;
+import java.util.Hashtable;
+
+public final class Teleporter extends JavaPlugin {
+    Dictionary<String, Location> teleportZiele = new Hashtable<>();
+
+    @Override
+    public void onEnable() {
+        // Plugin startup logic
+
+    }
+
+    @Override
+    public void onDisable() {
+        // Plugin shutdown logic
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        //sender.sendMessage("Hallo " + sender.getName());
+        switch (command.getName()) {
+            case "sayhello":
+                sender.sendMessage("Hallo " + sender.getName());
+                break;
+            case "teleportziel":
+                teleportZielMerken(sender);
+                break;
+            case "teleportzu":
+                teleportZuZiel(sender);
+                break;
+            default:
+                sender.sendMessage("Leider kann ich das Kommando " + command.getName() + " noch nicht.");
+        }
+
+        return true;
+    }
+
+    private void teleportZielMerken(CommandSender sender) {
+        Player player = (Player) sender;
+        teleportZiele.put(player.getName(), player.getLocation());
+        player.sendMessage("Ok, " + player.getName() + ", ich habe mir das gemerkt");
+    }
+
+    private void teleportZuZiel(CommandSender sender) {
+        Player player = (Player) sender;
+        if (teleportZiele.get(player.getName()) == null) {
+            player.sendMessage("Hey, " + player.getName() + ". Du musst dir zuerst einen Punkt merken");
+            return;
+        }
+
+        player.teleport(teleportZiele.get(player.getName()));
+        player.sendMessage("Ok, " + player.getName() + ", hab dich dorthin geschickt");
+    }
+}
+```
