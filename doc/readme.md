@@ -6,7 +6,7 @@ Entwicklung von Minecraft Plugins sehr gut.
 
 #### Vorbereitungen
 
-Zuerst ist es notwending die Entwicklungsumgebung [herunterzuladen]((https://www.jetbrains.com/idea/download)) und zu installieren. Verwendet
+Zuerst ist es notwending die Entwicklungsumgebung [herunterzuladen](https://www.jetbrains.com/idea/download) und zu installieren. Verwendet
 hierfür die "Community Edition". Wenn das geschehen ist, bitte das Modul für Minecraft hinzufügen.
 
 Dafür bitte unter "File" -> "Settings" die Einstellungen öffnen und danach "Plugins" klicken.
